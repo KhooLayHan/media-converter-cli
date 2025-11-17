@@ -53,7 +53,7 @@ checkstyle {
 spotbugs {
 	toolVersion = "4.3.0"
 	effort = Effort.MAX
-    reportLevel = Confidence.valueOf("LOW")
+	reportLevel = Confidence.valueOf("LOW")
 }
 
 tasks.withType(SpotBugsTask).configureEach {
@@ -61,16 +61,16 @@ tasks.withType(SpotBugsTask).configureEach {
 		xml.required = false
 		html.required = true
 	}
-    maxHeapSize = "512m"
+	maxHeapSize = "512m"
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.errorprone {
-        disableWarningsInGeneratedCode = true
+	options.errorprone {
+		disableWarningsInGeneratedCode = true
 
-        check("NullAway", CheckSeverity.ERROR)
-        option("NullAway:AnnotatedPackages", "org.khoolayhan")
-    }
+		check("NullAway", CheckSeverity.ERROR)
+		option("NullAway:AnnotatedPackages", "org.khoolayhan")
+	}
 }
 
 dependencies {
@@ -132,7 +132,7 @@ dependencies {
 	implementation "org.jspecify:jspecify:1.0.0"
 
 	// NullAway: https://github.com/uber/NullAway
-    annotationProcessor "com.uber.nullaway:nullaway:0.12.10"
+	annotationProcessor "com.uber.nullaway:nullaway:0.12.10"
 }
 
 test {
@@ -140,10 +140,16 @@ test {
 }
 
 configurations.configureEach {
-    resolutionStrategy {
-        force "org.apache.commons:commons-text:1.10.0"
-        force "org.apache.bcel:bcel:6.6.0"
-        force "com.google.code.gson:gson:2.8.9"
-        force "org.apache.commons:commons-lang3:3.18.0"
-    }
+	resolutionStrategy {
+		force "org.apache.commons:commons-text:1.10.0"
+		force "org.apache.bcel:bcel:6.6.0"
+		force "com.google.code.gson:gson:2.8.9"
+		force "org.apache.commons:commons-lang3:3.18.0"
+	}
+}
+
+configurations {
+	spotbugs {
+		exclude group: 'org.slf4j', module: 'slf4j-simple'
+	}
 }

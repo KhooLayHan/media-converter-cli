@@ -22,12 +22,14 @@ public class MediaConverter implements Runnable {
       names = {"-i", "--input"},
       required = true,
       description = "The input file to convert.")
+  @SuppressWarnings("NullAway.Init")
   private File inputFile;
 
   @CommandLine.Option(
       names = {"-o", "--output"},
       required = true,
       description = "The output file.")
+  @SuppressWarnings("NullAway.Init")
   private File outputFile;
 
   @Override
