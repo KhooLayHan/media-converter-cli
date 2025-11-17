@@ -30,15 +30,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Run Spotless Check
-        run: ./gradlew spotlessCheck
-
-      - name: Run Checkstyle
-        run: ./gradlew checkstyleMain checkstyleTest
-
-      - name: Run SpotBugs
-        run: ./gradlew spotbugsMain spotbugsTest
-
       - name: Upload JAR artifacts
         uses: actions/upload-artifact@v4
         with:
