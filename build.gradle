@@ -51,7 +51,7 @@ checkstyle {
 }
 
 spotbugs {
-	toolVersion = "4.3.0"
+	toolVersion = "4.9.4"
 	effort = Effort.MAX
 	reportLevel = Confidence.valueOf("LOW")
 }
@@ -145,11 +145,5 @@ configurations.configureEach {
 		force "org.apache.bcel:bcel:6.6.0"
 		force "com.google.code.gson:gson:2.8.9"
 		force "org.apache.commons:commons-lang3:3.18.0"
-	}
-}
-
-configurations {
-	spotbugs {
-		exclude group: 'org.slf4j', module: 'slf4j-simple'
 	}
 }
