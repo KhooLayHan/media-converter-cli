@@ -29,7 +29,6 @@ application {
 	mainClass = "org.khoolayhan.mc.cli.MediaConverter"
 }
 
-
 spotless {
 	java {
 		googleJavaFormat()
@@ -138,4 +137,13 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        force "org.apache.commons:commons-text:1.10.0"
+        force "org.apache.bcel:bcel:6.6.0"
+        force "com.google.code.gson:gson:2.8.9"
+        force "org.apache.commons:commons-lang3:3.18.0"
+    }
 }
