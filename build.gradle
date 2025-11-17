@@ -1,75 +1,141 @@
+import com.github.spotbugs.snom.Confidence
+import com.github.spotbugs.snom.Effort
+import com.github.spotbugs.snom.SpotBugsTask
+import net.ltgt.gradle.errorprone.CheckSeverity
+
 plugins {
-    id 'java'
-    id 'application'
+	id "java"
+	id "application"
+	id "com.diffplug.spotless" version "8.0.0"
+	id "checkstyle"
+	id "com.github.spotbugs" version "6.2.5"
+	id "net.ltgt.errorprone" version "4.3.0"
 }
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
 }
 
-group = 'org.khoolayhan.mc'
-version = '1.0-SNAPSHOT'
+group = "org.khoolayhan.mc"
+version = "1.0-SNAPSHOT"
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 application {
-    mainClass = "org.khoolayhan.mc.cli.MediaConverter"
+	mainClass = "org.khoolayhan.mc.cli.MediaConverter"
+}
+
+
+spotless {
+	java {
+		googleJavaFormat()
+		removeUnusedImports()
+		importOrder("java", "javax", "com", "org", "")
+		target "src/**/*.java"
+	}
+	format 'misc', {
+		target "*.gradle", "*.md", ".gitattributes", ".gitignore"
+
+		trimTrailingWhitespace()
+		leadingSpacesToTabs()
+		endWithNewline()
+	}
+}
+
+checkstyle {
+	toolVersion = "11.1.0"
+	configFile = file("${rootDir}/src/main/java/org/khoolayhan/mc/config/checkstyle/checkstyle.xml")
+}
+
+spotbugs {
+	toolVersion = "4.3.0"
+	effort = Effort.MAX
+    reportLevel = Confidence.valueOf("LOW")
+}
+
+tasks.withType(SpotBugsTask).configureEach {
+	reports {
+		xml.required = false
+		html.required = true
+	}
+    maxHeapSize = "512m"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.errorprone {
+        disableWarningsInGeneratedCode = true
+
+        check("NullAway", CheckSeverity.ERROR)
+        option("NullAway:AnnotatedPackages", "org.khoolayhan")
+    }
 }
 
 dependencies {
-    // SLF4J: https://github.com/qos-ch/slf4j
-    implementation "org.slf4j:slf4j-api:2.0.17"
+	// SLF4J: https://github.com/qos-ch/slf4j
+	implementation "org.slf4j:slf4j-api:2.0.17"
 
-    // Logback: https://github.com/qos-ch/logback
-    implementation "ch.qos.logback:logback-classic:1.5.19"
+	// Logback: https://github.com/qos-ch/logback
+	implementation "ch.qos.logback:logback-classic:1.5.19"
 
-    // Picocli: https://github.com/remkop/picocli
-    implementation "info.picocli:picocli:4.7.7"
-    annotationProcessor "info.picocli:picocli-codegen:4.7.7"
+	// Picocli: https://github.com/remkop/picocli
+	implementation "info.picocli:picocli:4.7.7"
+	annotationProcessor "info.picocli:picocli-codegen:4.7.7"
 
-    // JFiglet: https://github.com/lalyos/jfiglet
-    implementation "com.github.lalyos:jfiglet:0.0.9"
+	// JFiglet: https://github.com/lalyos/jfiglet
+	implementation "com.github.lalyos:jfiglet:0.0.9"
 
-    // Jackson: https://github.com/FasterXML/jackson
-    implementation "tools.jackson.core:jackson-databind:3.0.0"
-    implementation "tools.jackson.dataformat:jackson-dataformat-xml:3.0.0"
-    implementation "tools.jackson.dataformat:jackson-dataformat-csv:3.0.0"
-    implementation "tools.jackson.dataformat:jackson-dataformat-yaml:3.0.0"
-    implementation "tools.jackson.dataformat:jackson-dataformat-toml:3.0.0"
+	// Jackson: https://github.com/FasterXML/jackson
+	implementation "tools.jackson.core:jackson-databind:3.0.0"
+	implementation "tools.jackson.dataformat:jackson-dataformat-xml:3.0.0"
+	implementation "tools.jackson.dataformat:jackson-dataformat-csv:3.0.0"
+	implementation "tools.jackson.dataformat:jackson-dataformat-yaml:3.0.0"
+	implementation "tools.jackson.dataformat:jackson-dataformat-toml:3.0.0"
 
-    // Apache POI: https://github.com/apache/poi
-    implementation "org.apache.poi:poi:5.4.1"
+	// Apache POI: https://github.com/apache/poi
+	implementation "org.apache.poi:poi:5.4.1"
 
-    // Apache Commons Compress: https://github.com/apache/commons-compress
-    implementation "org.apache.commons:commons-compress:1.28.0"
+	// Apache Commons Compress: https://github.com/apache/commons-compress
+	implementation "org.apache.commons:commons-compress:1.28.0"
 
-    // Apache PDFBox: https://github.com/apache/pdfbox
-    implementation "org.apache.pdfbox:pdfbox:3.0.5"
+	// Apache PDFBox: https://github.com/apache/pdfbox
+	implementation "org.apache.pdfbox:pdfbox:3.0.5"
 
-    // JODConverter: https://github.com/jodconverter/jodconverter
-    implementation "org.jodconverter:jodconverter-local:4.4.11"
+	// JODConverter: https://github.com/jodconverter/jodconverter
+	implementation "org.jodconverter:jodconverter-local:4.4.11"
 
-    // TwelveMonkeys: https://github.com/haraldk/TwelveMonkeys
-    implementation "com.twelvemonkeys.imageio:imageio-jpeg:3.12.0"
-    implementation "com.twelvemonkeys.imageio:imageio-tiff:3.12.0"
-    implementation "com.twelvemonkeys.imageio:imageio-webp:3.12.0"
+	// TwelveMonkeys: https://github.com/haraldk/TwelveMonkeys
+	implementation "com.twelvemonkeys.imageio:imageio-jpeg:3.12.0"
+	implementation "com.twelvemonkeys.imageio:imageio-tiff:3.12.0"
+	implementation "com.twelvemonkeys.imageio:imageio-webp:3.12.0"
 
-    // JUnit: https://github.com/junit-team/junit-framework
-    testImplementation platform("org.junit:junit-bom:6.0.1")
-    testImplementation "org.junit.jupiter:junit-jupiter"
-    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+	// JUnit: https://github.com/junit-team/junit-framework
+	testImplementation platform("org.junit:junit-bom:6.0.1")
+	testImplementation "org.junit.jupiter:junit-jupiter"
+	testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 
-    // AssertJ: https://github.com/assertj/assertj
-    testImplementation "org.assertj:assertj-core:3.27.4"
+	// AssertJ: https://github.com/assertj/assertj
+	testImplementation "org.assertj:assertj-core:3.27.4"
 
-    // Mockito: https://github.com/mockito/mockito
-    testImplementation "org.mockito:mockito-core:5.20.0"
+	// Mockito: https://github.com/mockito/mockito
+	testImplementation "org.mockito:mockito-core:5.20.0"
+
+	// Checkstyle: https://github.com/checkstyle/checkstyle
+	implementation "com.puppycrawl.tools:checkstyle:${checkstyle.toolVersion}"
+
+	// ErrorProne: https://github.com/google/error-prone
+	errorprone "com.google.errorprone:error_prone_core:2.42.0"
+
+	// JSpecify: https://github.com/jspecify/jspecify
+	implementation "org.jspecify:jspecify:1.0.0"
+
+	// NullAway: https://github.com/uber/NullAway
+    annotationProcessor "com.uber.nullaway:nullaway:0.12.10"
 }
 
 test {
-    useJUnitPlatform()
+	useJUnitPlatform()
 }
