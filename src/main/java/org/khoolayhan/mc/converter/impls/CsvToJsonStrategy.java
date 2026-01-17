@@ -21,16 +21,15 @@ public class CsvToJsonStrategy implements ConversionStrategy {
             CsvMapper csvMapper = new CsvMapper();
             CsvSchema schema = csvMapper.schemaFor(User.class).withHeader();
 
-			// MappingIterator is used to read row by row
-			try (
-				MappingIterator<User> iterator = csvMapper.readerFor(User.class).with(schema).readValues(inputFile);
-			) {
-				List<User> users = iterator.readAll();
+            // MappingIterator is used to read row by row
+            try (MappingIterator<User> iterator =
+                    csvMapper.readerFor(User.class).with(schema).readValues(inputFile); ) {
+                List<User> users = iterator.readAll();
 
-				// 2. Write List<User> to JSON
-				ObjectMapper mapper = new ObjectMapper();
-				mapper.writeValue(outputFile, users);
-			}
+                // 2. Write List<User> to JSON
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.writeValue(outputFile, users);
+            }
         } catch (JacksonException e) {
             throw new ConversionException("Failed to convert CSV to JSON", e);
         }
