@@ -44,6 +44,12 @@ public class JacksonFacade {
     }
 
     // --- XML Operations ---
+    public <T> List<T> readXml(File source, Class<T> type) {
+        CollectionType listType =
+                xmlMapper.getTypeFactory().constructCollectionType(List.class, type);
+        return xmlMapper.readValue(source, listType);
+    }
+
     public <T> void writeXml(File dest, List<T> data) {
         // XML usually needs a root wrapper, but for simplicity in MVP, we write the list directly
         xmlMapper.writeValue(dest, data);
