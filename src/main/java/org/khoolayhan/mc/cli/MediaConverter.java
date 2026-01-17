@@ -45,7 +45,7 @@ public class MediaConverter implements Callable<Integer> {
 	public MediaConverter(File inputFile, File outputFile, ConversionEngine conversionEngine) {
 		this.inputFile = inputFile;
 		this.outputFile = outputFile;
-		this.conversionEngine = new ConversionEngine();
+		this.conversionEngine = conversionEngine;
     }
 
     @Override
