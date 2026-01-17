@@ -1,5 +1,7 @@
 package org.khoolayhan.mc.engine.factory;
 
+import java.util.Locale;
+
 import org.khoolayhan.mc.converter.ConversionStrategy;
 import org.khoolayhan.mc.converter.impls.XmlToCsvStrategy;
 import org.khoolayhan.mc.converter.impls.XmlToJsonStrategy;
@@ -13,7 +15,7 @@ public class XmlFactory implements ConverterFactory {
             throw new UnsupportedFormatException("Target format cannot be null");
         }
 
-        return switch (targetFormat.toLowerCase()) {
+        return switch (targetFormat.toLowerCase(Locale.ROOT)) {
             case "json" -> new XmlToJsonStrategy();
             case "csv" -> new XmlToCsvStrategy();
             default ->
