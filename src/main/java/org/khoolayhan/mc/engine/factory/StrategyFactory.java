@@ -1,6 +1,7 @@
 package org.khoolayhan.mc.engine.factory;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.khoolayhan.mc.converter.ConversionStrategy;
@@ -32,7 +33,7 @@ public final class StrategyFactory {
     public static ConversionStrategy getStrategy(String fromExtension, String toExtension)
             throws UnsupportedFormatException {
 
-        ConverterFactory factory = FACTORY_MAP.get(fromExtension.toLowerCase());
+        ConverterFactory factory = FACTORY_MAP.get(fromExtension.toLowerCase(Locale.ROOT));
         if (factory == null) {
             throw new UnsupportedFormatException(
                     "Input format " + fromExtension + " is not supported");
