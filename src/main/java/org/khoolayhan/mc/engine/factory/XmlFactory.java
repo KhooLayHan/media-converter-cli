@@ -15,8 +15,8 @@ public class XmlFactory implements ConverterFactory {
         }
 
         return switch (targetFormat) {
-            case FileType.JSON -> new XmlToJsonStrategy();
-            case FileType.CSV -> new XmlToCsvStrategy();
+            case JSON -> new XmlToJsonStrategy();
+            case CSV -> new XmlToCsvStrategy();
             default ->
                     throw new UnsupportedFormatException(
                             "Conversion from XML to "

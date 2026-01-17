@@ -15,8 +15,8 @@ public class JsonFactory implements ConverterFactory {
         }
 
         return switch (targetFormat) {
-            case FileType.CSV -> new JsonToCsvStrategy();
-            case FileType.XML -> new JsonToXmlStrategy();
+            case CSV -> new JsonToCsvStrategy();
+            case XML -> new JsonToXmlStrategy();
             default ->
                     throw new UnsupportedFormatException(
                             "Conversion from JSON to "
