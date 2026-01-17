@@ -1,7 +1,9 @@
 package org.khoolayhan.mc.engine.factory;
 
 import org.khoolayhan.mc.converter.ConversionStrategy;
+import org.khoolayhan.mc.converter.impls.CsvToJsonStrategy;
 import org.khoolayhan.mc.converter.impls.JsonToCsvStrategy;
+import org.khoolayhan.mc.converter.impls.JsonToXmlStrategy;
 import org.khoolayhan.mc.engine.exceptions.UnsupportedFormatException;
 
 public final class StrategyFactory {
@@ -17,10 +19,16 @@ public final class StrategyFactory {
      */
     public static ConversionStrategy getStrategy(String fromExtension, String toExtension)
             throws UnsupportedFormatException {
-        if ("json".equalsIgnoreCase(fromExtension) && "csv".equalsIgnoreCase(toExtension))
-            return new JsonToCsvStrategy();
 
-        // TODO: Add more strategy mappings here.
+		if ("json".equalsIgnoreCase(fromExtension) && "csv".equalsIgnoreCase(toExtension)) {
+			return new CsvToJsonStrategy();
+		}
+		if ("json".equalsIgnoreCase(fromExtension) && "xml".equalsIgnoreCase(toExtension)) {
+			return new JsonToXmlStrategy();
+		}
+		if ("csv".equalsIgnoreCase(fromExtension) && "json".equalsIgnoreCase(toExtension)) {
+			return new CsvToJsonStrategy();
+		}
 
         // If none is found, throw our custom exception
         throw new UnsupportedFormatException(
