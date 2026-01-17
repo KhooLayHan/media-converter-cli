@@ -1,74 +1,72 @@
 package org.khoolayhan.mc.converter.facade;
 
-import org.khoolayhan.mc.engine.exceptions.ConversionException;
-import tools.jackson.core.JacksonException;
+import java.io.File;
+import java.util.List;
+
 import tools.jackson.databind.MappingIterator;
-import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.ObjectWriter;
 import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.type.CollectionType;
-import tools.jackson.databind.type.TypeFactory;
 import tools.jackson.dataformat.csv.CsvMapper;
 import tools.jackson.dataformat.csv.CsvSchema;
 import tools.jackson.dataformat.xml.XmlMapper;
 
-import java.io.File;
-import java.util.List;
-
 /**
- * This class hides the complexity of the Jackson library (ObjectMappers, Schemas,
- * CollectionTypes, etc.) behind a clean, simple API.
+ * This class hides the complexity of the Jackson library (ObjectMappers, Schemas, CollectionTypes,
+ * etc.) behind a clean, simple API.
  */
 public class JacksonFacade {
-	private final JsonMapper jsonMapper;
-	private final XmlMapper xmlMapper;
-	private final CsvMapper csvMapper;
+    private final JsonMapper jsonMapper;
+    private final XmlMapper xmlMapper;
+    private final CsvMapper csvMapper;
 
-	public JacksonFacade() {
-		this.jsonMapper = JsonMapper.builder()
-				.enable(SerializationFeature.INDENT_OUTPUT).build(); // Pretty print by default
+    public JacksonFacade() {
+        this.jsonMapper =
+                JsonMapper.builder()
+                        .enable(SerializationFeature.INDENT_OUTPUT)
+                        .build(); // Pretty print by default
 
-		this.xmlMapper = XmlMapper.builder().enable(SerializationFeature.INDENT_OUTPUT).build();
+        this.xmlMapper = XmlMapper.builder().enable(SerializationFeature.INDENT_OUTPUT).build();
 
-		this.csvMapper = CsvMapper.builder().build();
-	}
+        this.csvMapper = CsvMapper.builder().build();
+    }
 
-	// --- JSON Operations ---
-	public <T> List<T> readJson(File source, Class<T> type) {
-		CollectionType listType = jsonMapper.getTypeFactory().constructCollectionType(List.class, type);
-		return jsonMapper.readValue(source, listType);
-	}
+    // --- JSON Operations ---
+    public <T> List<T> readJson(File source, Class<T> type) {
+        CollectionType listType =
+                jsonMapper.getTypeFactory().constructCollectionType(List.class, type);
+        return jsonMapper.readValue(source, listType);
+    }
 
-	public <T> void writeJson(File destination, List<T> data) {
-		jsonMapper.writeValue(destination, data);
-	}
+    public <T> void writeJson(File destination, List<T> data) {
+        jsonMapper.writeValue(destination, data);
+    }
 
-	// --- XML Operations ---
-	public <T> void writeXml(File dest, List<T> data) {
-		// XML usually needs a root wrapper, but for simplicity in MVP, we write the list directly
-		xmlMapper.writeValue(dest, data);
-	}
+    // --- XML Operations ---
+    public <T> void writeXml(File dest, List<T> data) {
+        // XML usually needs a root wrapper, but for simplicity in MVP, we write the list directly
+        xmlMapper.writeValue(dest, data);
+    }
 
-	// --- CSV Operations ---
-	public <T> List<T> readCsv(File source, Class<T> type) {
-		CsvSchema csvSchema = csvMapper.schemaFor(type).withHeader();
+    // --- CSV Operations ---
+    public <T> List<T> readCsv(File source, Class<T> type) {
+        CsvSchema csvSchema = csvMapper.schemaFor(type).withHeader();
 
-		try (
-			MappingIterator<T> iterator = csvMapper.readerFor(type).with(csvSchema).readValues(source)
-		) {
-			return iterator.readAll();
-		}
-	}
+        try (MappingIterator<T> iterator =
+                csvMapper.readerFor(type).with(csvSchema).readValues(source)) {
+            return iterator.readAll();
+        }
+    }
 
-	public <T> void writeCsv(File destination, List<T> data) {
-		if (data == null || data.isEmpty()) {
-			return;
-		}
+    public <T> void writeCsv(File destination, List<T> data) {
+        if (data == null || data.isEmpty()) {
+            return;
+        }
 
-		// Creates schema based on the User POJO class
-		CsvSchema csvSchema = csvMapper.schemaFor(List.class).withHeader();
-		ObjectWriter writer = jsonMapper.writer(csvSchema);
-		writer.writeValue(destination, data);
-	}
+        // Creates schema based on the User POJO class
+        CsvSchema csvSchema = csvMapper.schemaFor(data.getFirst().getClass()).withHeader();
+        ObjectWriter writer = csvMapper.writer(csvSchema);
+        writer.writeValue(destination, data);
+    }
 }

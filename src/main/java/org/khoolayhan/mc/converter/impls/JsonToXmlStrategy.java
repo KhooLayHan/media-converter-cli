@@ -9,22 +9,20 @@ import org.khoolayhan.mc.converter.models.User;
 import org.khoolayhan.mc.engine.exceptions.ConversionException;
 
 import tools.jackson.core.JacksonException;
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.type.CollectionType;
-import tools.jackson.dataformat.xml.XmlMapper;
 
 public class JsonToXmlStrategy implements ConversionStrategy {
-    private final JacksonFacade jacksonFacade;;
+    private final JacksonFacade jacksonFacade;
+    ;
 
-	public JsonToXmlStrategy(JacksonFacade jacksonFacade) {
-		this.jacksonFacade = jacksonFacade;
-	}
+    public JsonToXmlStrategy(JacksonFacade jacksonFacade) {
+        this.jacksonFacade = jacksonFacade;
+    }
 
-	@Override
+    @Override
     public void convert(File inputFile, File outputFile) throws ConversionException {
         try {
             List<User> users = jacksonFacade.readJson(inputFile, User.class);
-			jacksonFacade.writeXml(outputFile, users);
+            jacksonFacade.writeXml(outputFile, users);
         } catch (JacksonException e) {
             throw new ConversionException("Failed to convert JSON to XML", e);
         }
