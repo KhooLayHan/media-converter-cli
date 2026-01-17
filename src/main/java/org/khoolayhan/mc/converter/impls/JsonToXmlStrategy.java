@@ -14,8 +14,8 @@ public class JsonToXmlStrategy implements ConversionStrategy {
     private final JacksonFacade jacksonFacade;
     ;
 
-    public JsonToXmlStrategy(JacksonFacade jacksonFacade) {
-        this.jacksonFacade = jacksonFacade;
+    public JsonToXmlStrategy() {
+        this.jacksonFacade = new JacksonFacade();
     }
 
     @Override

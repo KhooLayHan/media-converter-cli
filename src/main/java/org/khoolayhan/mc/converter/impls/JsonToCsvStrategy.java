@@ -17,8 +17,8 @@ import tools.jackson.core.JacksonException;
 public class JsonToCsvStrategy implements ConversionStrategy {
     private final JacksonFacade jacksonFacade;
 
-    public JsonToCsvStrategy(JacksonFacade facade) {
-        this.jacksonFacade = facade;
+    public JsonToCsvStrategy() {
+        this.jacksonFacade = new JacksonFacade();
     }
 
     @Override
