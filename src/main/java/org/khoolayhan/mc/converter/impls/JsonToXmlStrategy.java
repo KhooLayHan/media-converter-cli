@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import org.khoolayhan.mc.converter.ConversionStrategy;
+import org.khoolayhan.mc.converter.facade.JacksonFacade;
 import org.khoolayhan.mc.converter.models.User;
 import org.khoolayhan.mc.engine.exceptions.ConversionException;
 
@@ -13,18 +14,17 @@ import tools.jackson.databind.type.CollectionType;
 import tools.jackson.dataformat.xml.XmlMapper;
 
 public class JsonToXmlStrategy implements ConversionStrategy {
-    @Override
+    private final JacksonFacade jacksonFacade;;
+
+	public JsonToXmlStrategy(JacksonFacade jacksonFacade) {
+		this.jacksonFacade = jacksonFacade;
+	}
+
+	@Override
     public void convert(File inputFile, File outputFile) throws ConversionException {
         try {
-            // 1. Read JSON
-            ObjectMapper mapper = new ObjectMapper();
-            CollectionType listType =
-                    mapper.getTypeFactory().constructCollectionType(List.class, User.class);
-            List<User> users = mapper.readValue(inputFile, listType);
-
-            // 2. Write XML
-            XmlMapper xmlMapper = new XmlMapper();
-            xmlMapper.writeValue(outputFile, users);
+            List<User> users = jacksonFacade.readJson(inputFile, User.class);
+			jacksonFacade.writeXml(outputFile, users);
         } catch (JacksonException e) {
             throw new ConversionException("Failed to convert JSON to XML", e);
         }
