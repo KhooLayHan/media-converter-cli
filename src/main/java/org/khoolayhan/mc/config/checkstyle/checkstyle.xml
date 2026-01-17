@@ -24,9 +24,6 @@
 		<property name="max" value="2000"/>
 	</module>
 
-	<!-- Checks for whitespace -->
-	<module name="FileTabCharacter"/>
-
 	<!-- Checks for trailing spaces -->
 	<module name="RegexpSingleline">
 		<property name="format" value="\s+$"/>
@@ -115,11 +112,11 @@
 		<module name="IllegalImport"/>
 		<module name="RedundantImport"/>
 		<module name="UnusedImports"/>
-		<module name="CustomImportOrder">
-			<property name="customImportOrderRules" value="THIRD_PARTY_PACKAGE###STANDARD_JAVA_PACKAGE###STATIC"/>
-			<property name="sortImportsInGroupAlphabetically" value="true"/>
-			<property name="separateLineBetweenGroups" value="true"/>
-		</module>
+<!--		<module name="CustomImportOrder">-->
+<!--			<property name="customImportOrderRules" value="STATIC, STANDARD_JAVA_PACKAGE, THIRD_PARTY_PACKAGE"/>-->
+<!--			<property name="sortImportsInGroupAlphabetically" value="true"/>-->
+<!--			<property name="separateLineBetweenGroups" value="true"/>-->
+<!--		</module>-->
 
 		<!-- JavaDoc -->
 		<module name="InvalidJavadocPosition"/>
@@ -237,7 +234,7 @@
 		<module name="SingleSpaceSeparator"/>
 		<module name="TypecastParenPad"/>
 		<module name="WhitespaceAfter"/>
-		<module name="WhitespaceAround"/>
+<!--		<module name="WhitespaceAround"/>-->
 
 	</module>
 
