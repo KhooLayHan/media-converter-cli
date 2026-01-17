@@ -21,10 +21,10 @@ public final class FileUtils {
         String name = file.getName();
 
         int lastIndexOf = name.lastIndexOf(".");
-        if (lastIndexOf == -1) {
+        if (lastIndexOf <= 0 || lastIndexOf == name.length() - 1) {
             return Optional.empty();
         }
 
-        return Optional.of(name.substring(lastIndexOf + 1).toLowerCase(Locale.getDefault()));
+        return Optional.of(name.substring(lastIndexOf + 1).toLowerCase(Locale.ROOT));
     }
 }

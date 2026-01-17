@@ -38,14 +38,19 @@ public class MediaConverter implements Callable<Integer> {
 
     private final ConversionEngine conversionEngine;
 
-    public MediaConverter(File inputFile) {
+	public MediaConverter() {
+		this.conversionEngine = new ConversionEngine();
+	}
+
+	public MediaConverter(File inputFile, File outputFile, ConversionEngine conversionEngine) {
 		this.inputFile = inputFile;
+		this.outputFile = outputFile;
 		this.conversionEngine = new ConversionEngine();
     }
 
     @Override
     public Integer call() {
-        if (inputFile.exists() && inputFile.isFile()) {
+        if (!inputFile.exists() || !inputFile.isFile()) {
             logger.error("Input file does not exist: {}", inputFile.getAbsolutePath());
             System.err.println("❌ Error: Input file not found: " + inputFile.getAbsolutePath());
             return 1; // Exit code 1 indicates failure
