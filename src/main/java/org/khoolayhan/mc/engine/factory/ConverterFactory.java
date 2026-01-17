@@ -2,6 +2,7 @@ package org.khoolayhan.mc.engine.factory;
 
 import org.khoolayhan.mc.converter.ConversionStrategy;
 import org.khoolayhan.mc.engine.exceptions.UnsupportedFormatException;
+import org.khoolayhan.mc.utils.FileType;
 
 /**
  * Defines the contract for creating conversion strategies. Concrete implementations (JsonFactory,
@@ -15,5 +16,5 @@ public interface ConverterFactory {
      * @return The appropriate ConversionStrategy.
      * @throws UnsupportedFormatException if the target format is not supported.
      */
-    ConversionStrategy createStrategy(String targetFormat) throws UnsupportedFormatException;
+    ConversionStrategy createStrategy(FileType targetFormat) throws UnsupportedFormatException;
 }

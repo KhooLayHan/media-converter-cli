@@ -1,26 +1,27 @@
 package org.khoolayhan.mc.engine.factory;
 
-import java.util.Locale;
-
 import org.khoolayhan.mc.converter.ConversionStrategy;
 import org.khoolayhan.mc.converter.impls.XmlToCsvStrategy;
 import org.khoolayhan.mc.converter.impls.XmlToJsonStrategy;
 import org.khoolayhan.mc.engine.exceptions.UnsupportedFormatException;
+import org.khoolayhan.mc.utils.FileType;
 
 public class XmlFactory implements ConverterFactory {
     @Override
-    public ConversionStrategy createStrategy(String targetFormat)
+    public ConversionStrategy createStrategy(FileType targetFormat)
             throws UnsupportedFormatException {
         if (targetFormat == null) {
             throw new UnsupportedFormatException("Target format cannot be null");
         }
 
-        return switch (targetFormat.toLowerCase(Locale.ROOT)) {
-            case "json" -> new XmlToJsonStrategy();
-            case "csv" -> new XmlToCsvStrategy();
+        return switch (targetFormat) {
+            case FileType.JSON -> new XmlToJsonStrategy();
+            case FileType.CSV -> new XmlToCsvStrategy();
             default ->
                     throw new UnsupportedFormatException(
-                            "Conversion from XML to " + targetFormat + " is not supported");
+                            "Conversion from XML to "
+                                    + targetFormat.getExtension()
+                                    + " is not supported");
         };
     }
 }

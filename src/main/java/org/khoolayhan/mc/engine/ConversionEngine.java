@@ -6,6 +6,7 @@ import org.khoolayhan.mc.converter.ConversionStrategy;
 import org.khoolayhan.mc.engine.exceptions.ConversionException;
 import org.khoolayhan.mc.engine.exceptions.UnsupportedFormatException;
 import org.khoolayhan.mc.engine.factory.StrategyFactory;
+import org.khoolayhan.mc.utils.FileType;
 import org.khoolayhan.mc.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,19 +26,19 @@ public class ConversionEngine {
             throws ConversionException, UnsupportedFormatException {
         logger.info("Starting conversion process for input: {}", inputFile.getName());
 
-        String fromExtension =
+        FileType fromExtension =
                 FileUtils.getExtension(inputFile)
                         .orElseThrow(
                                 () ->
                                         new UnsupportedFormatException(
-                                                "Input file has no extension."));
+                                                "Input file has no valid extension."));
 
-        String toExtension =
+        FileType toExtension =
                 FileUtils.getExtension(outputFile)
                         .orElseThrow(
                                 () ->
                                         new UnsupportedFormatException(
-                                                "Output file has no extension."));
+                                                "Output file has no valid extension."));
 
         logger.debug("Determined conversion type: {} -> {}", fromExtension, toExtension);
 
