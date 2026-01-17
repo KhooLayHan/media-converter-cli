@@ -32,7 +32,7 @@ public final class StrategyFactory {
     public static ConversionStrategy getStrategy(String fromExtension, String toExtension)
             throws UnsupportedFormatException {
 
-        ConverterFactory factory = FACTORY_MAP.get(fromExtension);
+        ConverterFactory factory = FACTORY_MAP.get(fromExtension.toLowerCase());
         if (factory == null) {
             throw new UnsupportedFormatException(
                     "Input format " + fromExtension + " is not supported");

@@ -9,6 +9,10 @@ public class CsvFactory implements ConverterFactory {
     @Override
     public ConversionStrategy createStrategy(String targetFormat)
             throws UnsupportedFormatException {
+        if (targetFormat == null) {
+            throw new UnsupportedFormatException("Target format cannot be null");
+        }
+
         return switch (targetFormat.toLowerCase()) {
             case "json" -> new CsvToJsonStrategy();
             case "xml" -> new CsvToXmlStrategy();
