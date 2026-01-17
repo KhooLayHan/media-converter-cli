@@ -12,7 +12,6 @@ import tools.jackson.core.JacksonException;
 
 public class JsonToXmlStrategy implements ConversionStrategy {
     private final JacksonFacade jacksonFacade;
-    ;
 
     public JsonToXmlStrategy() {
         this.jacksonFacade = new JacksonFacade();

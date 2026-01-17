@@ -14,10 +14,9 @@ public final class FileUtils {
      * Gets the file extension from a file name.
      *
      * @param file The file.
-     * @return An Optional containing the lowercase extension without the dot, or empty if none
-     *     exists.
+     * @return An Optional containing the FileType, or empty if no valid extension exists.
      */
-    public static Optional<String> getExtension(File file) {
+    public static Optional<FileType> getExtension(File file) {
         String name = file.getName();
 
         int lastIndexOf = name.lastIndexOf(".");
@@ -25,6 +24,12 @@ public final class FileUtils {
             return Optional.empty();
         }
 
-        return Optional.of(name.substring(lastIndexOf + 1).toLowerCase(Locale.ROOT));
+        String extension = name.substring(lastIndexOf + 1).toLowerCase(Locale.ROOT);
+
+        try {
+            return Optional.of(FileType.fromExtension(extension));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 }
