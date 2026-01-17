@@ -10,20 +10,20 @@ import org.khoolayhan.mc.engine.exceptions.ConversionException;
 
 import tools.jackson.core.JacksonException;
 
-public class CsvToJsonStrategy implements ConversionStrategy {
+public class XmlToCsvStrategy implements ConversionStrategy {
     private final JacksonFacade jacksonFacade;
 
-    public CsvToJsonStrategy() {
+    public XmlToCsvStrategy() {
         this.jacksonFacade = new JacksonFacade();
     }
 
     @Override
     public void convert(File inputFile, File outputFile) throws ConversionException {
         try {
-            List<User> users = jacksonFacade.readCsv(inputFile, User.class);
-            jacksonFacade.writeJson(outputFile, users);
+            List<User> users = jacksonFacade.readXml(inputFile, User.class);
+            jacksonFacade.writeCsv(outputFile, users);
         } catch (JacksonException e) {
-            throw new ConversionException("Failed to convert CSV to JSON", e);
+            throw new ConversionException("Failed to convert XML to CSV", e);
         }
     }
 }
