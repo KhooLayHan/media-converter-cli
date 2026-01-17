@@ -10,7 +10,7 @@ plugins {
 	id "checkstyle"
 	id "com.github.spotbugs" version "6.2.5"
 	id "net.ltgt.errorprone" version "4.3.0"
-    id "com.gradleup.shadow" version "8.3.9"
+	id "com.gradleup.shadow" version "8.3.9"
 }
 
 java {
@@ -84,16 +84,16 @@ dependencies {
 	// SLF4J: https://github.com/qos-ch/slf4j
 	implementation "org.slf4j:slf4j-api:2.0.17"
 
-    constraints {
-        implementation('org.apache.logging.log4j:log4j-core') {
-            version {
-                strictly '[2.25.3,)'
-            }
-            because 'CVE-2025-68161: TLS hostname verification bypass in Socket Appender'
-        }
-    }
+	constraints {
+		implementation('org.apache.logging.log4j:log4j-core') {
+			version {
+				strictly '[2.25.3,)'
+			}
+			because 'CVE-2025-68161: TLS hostname verification bypass in Socket Appender'
+		}
+	}
 
-    // Logback: https://github.com/qos-ch/logback
+	// Logback: https://github.com/qos-ch/logback
 	implementation "ch.qos.logback:logback-classic:1.5.19"
 
 	// Picocli: https://github.com/remkop/picocli
