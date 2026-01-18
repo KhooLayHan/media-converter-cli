@@ -1,6 +1,7 @@
 package org.khoolayhan.mc.converter.impls;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import org.khoolayhan.mc.converter.ConversionStrategy;
 import org.khoolayhan.mc.converter.facade.JacksonFacade;
@@ -29,7 +30,8 @@ public abstract class AbstractConversionStrategy implements ConversionStrategy {
     public final void convert(File inputFile, File outputFile) throws ConversionException {
         if (!inputFile.exists()) {
             throw new ConversionException(
-                    "Input file does not exist: " + inputFile.getName(), null);
+                    "Input file does not exist: " + inputFile.getName(),
+                    new FileNotFoundException(inputFile.getPath()));
         }
 
         logger.debug("Converting {} to {}", inputFile.getName(), outputFile.getName());
