@@ -1,17 +1,25 @@
 <configuration>
 
 	<!-- Property for log file location - makes it configurable -->
-	<property name="LOG_FILE" value="${LOG_PATH:-logs}/hrm-app.log"/>
+	<property name="LOG_FILE" value="${LOG_PATH:-logs}/media-converter.log"/>
 	<property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
 
-	<!-- Console Appender with colored output -->
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+	<!-- Console Appender with colored output, only for development/debugging -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{36}) - %msg%n</pattern>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{20}) - %msg%n</pattern>
 		</encoder>
+		<!-- Filter to prevent user-facing messages from appearing in logs -->
+		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+			<evaluator>
+				<expression>logger.contains("UserFacing")</expression>
+			</evaluator>
+			<OnMatch>DENY</OnMatch>
+			<OnMismatch>NEUTRAL</OnMismatch>
+		</filter>
 	</appender>
 
-	<!-- Rolling File Appender (better than FileAppender) -->
+	<!-- Rolling File Appender for all Application Logs -->
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${LOG_FILE}</file>
 		<encoder>
@@ -19,11 +27,27 @@
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- Daily rollover -->
-			<fileNamePattern>logs/hrm-app.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>logs/media-converter.%d{yyyy-MM-dd}.log</fileNamePattern>
 			<!-- Keep 30 days of history -->
 			<maxHistory>30</maxHistory>
 			<!-- Total size cap -->
-			<totalSizeCap>10GB</totalSizeCap>
+			<totalSizeCap>5GB</totalSizeCap>
+		</rollingPolicy>
+	</appender>
+
+	<!-- Separate file for errors only -->
+	<appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/media-converter-error.log</file>
+		<encoder>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.core.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/media-converter-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>90</maxHistory>
+			<totalSizeCap>2GB</totalSizeCap>
 		</rollingPolicy>
 	</appender>
 
@@ -34,21 +58,37 @@
 		<discardingThreshold>0</discardingThreshold>
 	</appender>
 
+	<appender name="ASYNC_ERROR_FILE" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="ERROR_FILE"/>
+		<queueSize>256</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+	</appender>
+
 	<!-- Root logger -->
 	<root level="INFO">
-		<appender-ref ref="STDOUT"/>
 		<appender-ref ref="ASYNC_FILE"/>
+		<appender-ref ref="ASYNC_ERROR_FILE"/>
 	</root>
 
 	<!-- Application specific loggers -->
 	<logger name="org.khoolayhan.mc" level="DEBUG" additivity="false">
-		<appender-ref ref="STDOUT"/>
 		<appender-ref ref="ASYNC_FILE"/>
+		<appender-ref ref="ASYNC_ERROR_FILE"/>
 	</logger>
 
-	<!-- Reduce noise from frameworks -->
+	<!-- Development for console logging -->
+	<!-- Uncomment this during development -->
+	<!--
+	<logger name="org.khoolayhan.mc" level="DEBUG" additivity="false">
+	   <appender-ref ref="CONSOLE"/>
+	   <appender-ref ref="ASYNC_FILE"/>
+	   <appender-ref ref="ASYNC_ERROR_FILE"/>
+	</logger>
+	-->
+
+	<!-- Reduce noise from third-party libraries/frameworks -->
 	<logger name="org.springframework" level="WARN"/>
 	<logger name="org.hibernate" level="WARN"/>
 	<logger name="com.zaxxer.hikari" level="WARN"/>
-
+	<logger name="picocli" level="WARN"/>
 </configuration>
