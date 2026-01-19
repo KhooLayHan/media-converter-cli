@@ -10,14 +10,6 @@
 		<encoder>
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{20}) - %msg%n</pattern>
 		</encoder>
-		<!-- Filter to prevent user-facing messages from appearing in logs -->
-		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
-			<evaluator>
-				<expression>logger.contains("UserFacing")</expression>
-			</evaluator>
-			<OnMatch>DENY</OnMatch>
-			<OnMismatch>NEUTRAL</OnMismatch>
-		</filter>
 	</appender>
 
 	<!-- Rolling File Appender for all Application Logs -->
@@ -28,7 +20,7 @@
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- Daily rollover -->
-			<fileNamePattern>logs/media-converter.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>${LOG_DIR}/media-converter.%d{yyyy-MM-dd}.log</fileNamePattern>
 			<!-- Keep 30 days of history -->
 			<maxHistory>30</maxHistory>
 			<!-- Total size cap -->
@@ -38,15 +30,15 @@
 
 	<!-- Separate file for errors only -->
 	<appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>logs/media-converter-error.log</file>
+		<file>${LOG_DIR}/media-converter-error.log</file>
 		<encoder>
 			<pattern>${LOG_PATTERN}</pattern>
 		</encoder>
-		<filter class="ch.qos.logback.core.filter.ThresholdFilter">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>ERROR</level>
 		</filter>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>logs/media-converter-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>${LOG_DIR}/media-converter-error.%d{yyyy-MM-dd}.log</fileNamePattern>
 			<maxHistory>90</maxHistory>
 			<totalSizeCap>2GB</totalSizeCap>
 		</rollingPolicy>
@@ -79,13 +71,13 @@
 
 	<!-- Development for console logging -->
 	<!-- Uncomment this during development -->
-	<!--
+<!--	&lt;!&ndash;-->
 	<logger name="org.khoolayhan.mc" level="DEBUG" additivity="false">
 	   <appender-ref ref="CONSOLE"/>
 	   <appender-ref ref="ASYNC_FILE"/>
 	   <appender-ref ref="ASYNC_ERROR_FILE"/>
 	</logger>
-	-->
+<!--	&ndash;&gt;-->
 
 	<!-- Reduce noise from third-party libraries/frameworks -->
 	<logger name="org.springframework" level="WARN"/>
