@@ -2,6 +2,7 @@ package org.khoolayhan.mc.legacy;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 import org.khoolayhan.mc.converter.models.User;
 
@@ -21,7 +22,8 @@ import tools.jackson.dataformat.xml.XmlMapper;
  * Cohesion: One class handles args parsing, file checking, and conversion logic. 4. Violation of
  * OCP: To add a new format, you must modify this file.
  */
-public class LegacyMediaConverter {
+@SuppressWarnings("CatchAndPrintStackTrace")
+public final class LegacyMediaConverter {
     private LegacyMediaConverter() {
         // Utility class
     }
@@ -54,8 +56,8 @@ public class LegacyMediaConverter {
         }
 
         // Determine Extensions (No FileUtils, No Type Safety)
-        String inName = inputFile.getName().toLowerCase();
-        String outName = outputFile.getName().toLowerCase();
+        String inName = inputFile.getName().toLowerCase(Locale.ROOT);
+        String outName = outputFile.getName().toLowerCase(Locale.ROOT);
         String inExt = inName.substring(inName.lastIndexOf(".") + 1);
         String outExt = outName.substring(outName.lastIndexOf(".") + 1);
 
