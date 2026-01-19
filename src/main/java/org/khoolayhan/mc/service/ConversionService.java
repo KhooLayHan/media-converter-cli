@@ -74,11 +74,6 @@ public class ConversionService {
             throw new IllegalArgumentException(
                     "Output directory is not writable: " + parent.getAbsolutePath());
         }
-
-        logger.debug(
-                "Output file validation passed. Size: {} bytes, Can write: {}",
-                outputFile.length(),
-                outputFile.canWrite());
     }
 
     /**
