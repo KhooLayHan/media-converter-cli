@@ -5,11 +5,6 @@
 	<property name="LOG_FILE" value="${LOG_DIR}/media-converter.log"/>
 	<property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
 
-<!--	<fileNamePattern>${LOG_DIR}/media-converter.%d{yyyy-MM-dd}.log</fileNamePattern>-->
-
-<!--	<file>${LOG_DIR}/media-converter-error.log</file>-->
-<!--	<fileNamePattern>${LOG_DIR}/media-converter-error.%d{yyyy-MM-dd}.log</fileNamePattern>-->
-
 	<!-- Console Appender with colored output, only for development/debugging -->
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
