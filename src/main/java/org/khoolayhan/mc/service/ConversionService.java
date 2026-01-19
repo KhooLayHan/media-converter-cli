@@ -40,9 +40,11 @@ public class ConversionService {
                     "Input path is not a file: " + inputFile.getAbsolutePath());
         }
 
-		// Log technical details that users don't need to see
-		logger.debug("Input file validation passed. Size: {} bytes, Can read: {}",
-				inputFile.length(), inputFile.canRead());
+        // Log technical details that users don't need to see
+        logger.debug(
+                "Input file validation passed. Size: {} bytes, Can read: {}",
+                inputFile.length(),
+                inputFile.canRead());
     }
 
     /**
