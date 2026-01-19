@@ -302,6 +302,6 @@ cached-antora-playbook.yml
 node_modules
 /.kotlin/
 
-#*.json
-#*.csv
-#*.xml
+*.json
+*.csv
+*.xml
