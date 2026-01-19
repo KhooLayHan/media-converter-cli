@@ -6,9 +6,12 @@ import java.util.concurrent.Callable;
 
 import com.github.lalyos.jfiglet.FigletFont;
 
+import org.khoolayhan.mc.constants.ExitCodes;
 import org.khoolayhan.mc.engine.ConversionEngine;
 import org.khoolayhan.mc.engine.exceptions.ConversionException;
 import org.khoolayhan.mc.engine.exceptions.UnsupportedFormatException;
+import org.khoolayhan.mc.service.ConversionResult;
+import org.khoolayhan.mc.service.ConversionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,68 +39,96 @@ public class MediaConverter implements Callable<Integer> {
     @SuppressWarnings("NullAway.Init")
     private File outputFile;
 
-    private final ConversionEngine conversionEngine;
+	private final ConversionService conversionService;
+	private final UserFeedback feedback;
 
-    public MediaConverter() {
-        this.conversionEngine = new ConversionEngine();
-    }
+	public MediaConverter() {
+		this(new ConversionService(new ConversionEngine()), new UserFeedback(logger));
+	}
 
-    public MediaConverter(File inputFile, File outputFile, ConversionEngine conversionEngine) {
-        this.inputFile = inputFile;
-        this.outputFile = outputFile;
-        this.conversionEngine = conversionEngine;
-    }
+	public MediaConverter(ConversionService conversionService, UserFeedback feedback) {
+		this.conversionService = conversionService;
+		this.feedback = feedback;
+	}
 
     @Override
     public Integer call() {
-        if (!inputFile.exists() || !inputFile.isFile()) {
-            logger.error("Input file does not exist: {}", inputFile.getAbsolutePath());
-            System.err.println("❌ Error: Input file not found: " + inputFile.getAbsolutePath());
-            return 1; // Exit code 1 indicates failure
-        }
+		long startTime = System.currentTimeMillis();
+		logger.debug("Working directory: {}", System.getProperty("user.dir"));
 
-        try {
-            // 2. Delegate to the engine
-            System.out.println("⏳ Starting conversion...");
-            conversionEngine.process(inputFile, outputFile);
-            System.out.println("✅ Success! Output created at: " + outputFile.getAbsolutePath());
-            return 0; // Exit code 0 indicates success
-        } catch (UnsupportedFormatException e) {
-            // Handle expected errors (User asked for something we can't do)
-            logger.warn("Unsupported format requested: {}", e.getMessage());
-            System.err.println("❌ Error: " + e.getMessage());
-            return 1;
+		try {
+			feedback.showProgress("Starting conversion...");
+			feedback.showInfo("Input: " + inputFile.getName());
+			feedback.showInfo("Output: " + outputFile.getName());
 
-        } catch (ConversionException e) {
-            // Handle runtime errors during conversion (Corrupt files, IO errors)
-            logger.error("Conversion failed", e);
-            System.err.println("❌ Error during conversion: " + e.getMessage());
-            System.err.println("   (Check the logs for technical details)");
-            return 2;
+			ConversionResult result = conversionService.convert(inputFile, outputFile);
 
-        } catch (Exception e) {
-            // Handle unexpected crashes
-            logger.error("Unexpected error", e);
-            System.err.println("❌ An unexpected error occurred: " + e.getMessage());
-            return 3;
-        }
+			// Success handling
+			if (result.isSuccess()) {
+				feedback.showSuccess("Output created at: " + result.getOutputFile().getAbsolutePath());
+				logger.info("--- Conversion Request Completed Successfully ---");
+
+				return ExitCodes.EXIT_SUCCESS;
+			} else {
+				feedback.showError(result.getMessage());
+				logger.warn("Conversion returned unsuccessful result: {}", result.getMessage());
+
+				return ExitCodes.EXIT_CONVERSION_FAILED;
+			}
+		} catch (IllegalArgumentException e) {
+			feedback.showError(e.getMessage());
+
+			logger.error("Input validation failed: {}", e.getMessage());
+			logger.debug("Validation failure details", e);
+
+			return ExitCodes.EXIT_INVALID_INPUT;
+		} catch (UnsupportedFormatException e) {
+			feedback.showError(e.getMessage());
+			// feedback.showInfo("Use --help to see supported formats");
+
+			logger.warn("Unsupported format requested: {}", e.getMessage());
+
+			return ExitCodes.EXIT_INVALID_INPUT;
+		} catch (ConversionException e) {
+			feedback.showError("Conversion failed: " + e.getMessage(),
+					"Check the logs for technical details");
+			logger.error("Conversion exception occurred", e);
+
+			return ExitCodes.EXIT_CONVERSION_FAILED;
+		} catch (Exception e) {
+			feedback.showDetailedError("An unexpected error occurred", e);
+
+			logger.error("Unexpected exception in conversion process", e);
+			logger.error("Input file: {}, Output file: {}", inputFile, outputFile);
+
+			return ExitCodes.EXIT_UNEXPECTED_ERROR;
+		} finally {
+			long totalDuration = System.currentTimeMillis() - startTime;
+			logger.info("Total execution time: {}ms", totalDuration);
+		}
     }
 
     public static void main(String[] args) {
-        printBanner();
+        UserFeedback feedback = new UserFeedback(logger);
 
-        // 2. Execute the CLI logic using Picocli
+		printBanner(feedback);
+
+		logger.info("--- Media Converter CLI started ---");
+		logger.debug("Command line arguments: {}", String.join(" ", args));
+
         int exitCode = new CommandLine(new MediaConverter()).execute(args);
-        System.exit(exitCode);
+
+		logger.info("Application exiting with code: {}", exitCode);
+		System.exit(exitCode);
     }
 
-    private static void printBanner() {
-        // 1. Print the startup banner
+    private static void printBanner(UserFeedback feedback) {
         try {
             String asciiArt = FigletFont.convertOneLine("Media Converter");
-            logger.info("{}", asciiArt);
+			feedback.showPlain(asciiArt);
         } catch (IOException e) {
-            System.out.println("--- Media Converter ---");
+			feedback.showPlain("--- Media Converter ---");
+			logger.debug("Failed to load FigletFont, using simple banner", e);
         }
     }
 }
