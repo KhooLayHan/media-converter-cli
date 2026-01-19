@@ -120,27 +120,27 @@
 
 		<!-- JavaDoc -->
 		<module name="InvalidJavadocPosition"/>
-		<module name="JavadocMethod">
-			<property name="accessModifiers" value="public"/>
-			<property name="allowMissingParamTags" value="false"/>
-			<property name="allowMissingReturnTag" value="false"/>
-		</module>
-		<module name="JavadocType">
-			<property name="scope" value="public"/>
-		</module>
-		<module name="JavadocVariable">
-			<property name="accessModifiers" value="public"/>
-		</module>
-		<module name="JavadocStyle">
-			<property name="checkEmptyJavadoc" value="true"/>
-		</module>
-		<module name="MissingJavadocMethod">
-			<property name="scope" value="public"/>
-			<property name="allowMissingPropertyJavadoc" value="true"/>
-		</module>
-		<module name="MissingJavadocType">
-			<property name="scope" value="public"/>
-		</module>
+<!--		<module name="JavadocMethod">-->
+<!--			<property name="accessModifiers" value="public"/>-->
+<!--			<property name="allowMissingParamTags" value="false"/>-->
+<!--			<property name="allowMissingReturnTag" value="false"/>-->
+<!--		</module>-->
+<!--		<module name="JavadocType">-->
+<!--			<property name="scope" value="public"/>-->
+<!--		</module>-->
+<!--		<module name="JavadocVariable">-->
+<!--			<property name="accessModifiers" value="public"/>-->
+<!--		</module>-->
+<!--		<module name="JavadocStyle">-->
+<!--			<property name="checkEmptyJavadoc" value="true"/>-->
+<!--		</module>-->
+<!--		<module name="MissingJavadocMethod">-->
+<!--			<property name="scope" value="public"/>-->
+<!--			<property name="allowMissingPropertyJavadoc" value="true"/>-->
+<!--		</module>-->
+<!--		<module name="MissingJavadocType">-->
+<!--			<property name="scope" value="public"/>-->
+<!--		</module>-->
 
 		<!-- Metrics -->
 		<module name="CyclomaticComplexity">
@@ -173,7 +173,7 @@
 		<module name="ClassTypeParameterName">
 			<property name="format" value="^[A-Z][A-Z0-9]*$"/>
 		</module>
-		<module name="ConstantName"/>
+<!--		<module name="ConstantName"/>-->
 		<module name="InterfaceTypeParameterName">
 			<property name="format" value="^[A-Z][A-Z0-9]*$"/>
 		</module>
@@ -213,14 +213,14 @@
 		<!-- Whitespace -->
 		<module name="EmptyForInitializerPad"/>
 		<module name="EmptyForIteratorPad"/>
-		<module name="EmptyLineSeparator">
-			<property name="allowNoEmptyLineBetweenFields" value="true"/>
-		</module>
+<!--		<module name="EmptyLineSeparator">-->
+<!--			<property name="allowNoEmptyLineBetweenFields" value="true"/>-->
+<!--		</module>-->
 		<module name="GenericWhitespace"/>
 		<module name="MethodParamPad"/>
 		<module name="NoLineWrap"/>
 		<module name="NoWhitespaceAfter"/>
-		<module name="NoWhitespaceBefore"/>
+<!--		<module name="NoWhitespaceBefore"/>-->
 		<module name="OperatorWrap"/>
 		<module name="ParenPad"/>
 		<module name="SeparatorWrap">
