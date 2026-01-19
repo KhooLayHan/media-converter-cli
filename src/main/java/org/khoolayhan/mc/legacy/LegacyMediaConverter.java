@@ -22,12 +22,19 @@ import tools.jackson.dataformat.xml.XmlMapper;
  * Cohesion: One class handles args parsing, file checking, and conversion logic. 4. Violation of
  * OCP: To add a new format, you must modify this file.
  */
-@SuppressWarnings("CatchAndPrintStackTrace")
 public final class LegacyMediaConverter {
     private LegacyMediaConverter() {
         // Utility class
     }
 
+    @SuppressWarnings(
+            value = {
+                "CatchAndPrintStackTrace",
+                "CyclomaticComplexityCheck",
+                "ExecutableStatementCount",
+                "IllegalCatch",
+                "REC_CATCH_EXCEPTION"
+            })
     public static void main(String[] args) {
         // Rudimentary Argument Parsing (No Picocli)
         String inputFileParam = null;
@@ -67,6 +74,7 @@ public final class LegacyMediaConverter {
             // THE GIANT IF-ELSE BLOCK (The "Anti-Pattern")
 
             // --- Json Input ---
+            //			@SuppressWarnings()
             if ("json".equals(inExt)) {
                 // Read JSON
                 JsonMapper jsonMapper =
@@ -154,7 +162,7 @@ public final class LegacyMediaConverter {
             } else {
                 System.err.println("Unsupported input format: " + inExt);
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             // Poor error handling
             e.printStackTrace();
         }
