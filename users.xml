@@ -1,0 +1,17 @@
+<ArrayList>
+  <item>
+    <id>1</id>
+    <name>Ali</name>
+    <email>ali@example.com</email>
+  </item>
+  <item>
+    <id>2</id>
+    <name>Bob</name>
+    <email>bob@test.org</email>
+  </item>
+  <item>
+    <id>3</id>
+    <name>Chong</name>
+    <email>chong@apu.edu.my</email>
+  </item>
+</ArrayList>
