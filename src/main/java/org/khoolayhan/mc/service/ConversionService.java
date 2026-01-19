@@ -39,13 +39,47 @@ public class ConversionService {
             throw new IllegalArgumentException(
                     "Input path is not a file: " + inputFile.getAbsolutePath());
         }
+		if (!inputFile.canRead()) {
+			throw new IllegalArgumentException(
+			"Input file is not readable: " + inputFile.getAbsolutePath());
+		}
 
-        // Log technical details that users don't need to see
         logger.debug(
                 "Input file validation passed. Size: {} bytes, Can read: {}",
                 inputFile.length(),
                 inputFile.canRead());
     }
+
+	/**
+	 * Validates that the output file exists and is a valid file.
+	 *
+	 * @param outputFile the file to validate
+	 * @throws IllegalArgumentException if file is invalid
+	 */
+	public void validateOutputFile(File outputFile) {
+		if (outputFile == null) {
+			throw new IllegalArgumentException("Output file cannot be null");
+		}
+		if (outputFile.exists() && outputFile.isDirectory()) {
+			throw new IllegalArgumentException(
+				"Output path is a directory: " + outputFile.getAbsolutePath());
+		}
+
+		File parent = outputFile.getAbsoluteFile().getParentFile();
+		if (parent != null && !parent.exists()) {
+			throw new IllegalArgumentException(
+				"Output directory does not exist: " + parent.getAbsolutePath());
+	 	}
+		if (parent != null && !parent.canWrite()) {
+			throw new IllegalArgumentException(
+			"Output directory is not writable: " + parent.getAbsolutePath());
+		}
+
+		logger.debug(
+				"Output file validation passed. Size: {} bytes, Can write: {}",
+				outputFile.length(),
+				outputFile.canWrite());
+	}
 
     /**
      * Converts a file from one format to another.
@@ -58,14 +92,16 @@ public class ConversionService {
      */
     public ConversionResult convert(File inputFile, File outputFile)
             throws ConversionException, UnsupportedFormatException {
-        logger.info(
-                "Starting conversion: {} -> {}",
-                inputFile.getAbsolutePath(),
-                outputFile.getAbsolutePath());
 
         validateInputFile(inputFile);
+		validateOutputFile(outputFile);
 
-        conversionEngine.process(inputFile, outputFile);
+		logger.info(
+				"Starting conversion: {} -> {}",
+				inputFile.getAbsolutePath(),
+				outputFile.getAbsolutePath());
+
+		conversionEngine.process(inputFile, outputFile);
 
         return new ConversionResult(true, outputFile, "Conversion completed successfully.");
     }
