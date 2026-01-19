@@ -6,11 +6,11 @@
 	<property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
 
 	<!-- Console Appender with colored output, only for development/debugging -->
-	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{20}) - %msg%n</pattern>
-		</encoder>
-	</appender>
+<!--	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--		<encoder>-->
+<!--			<pattern>%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{20}) - %msg%n</pattern>-->
+<!--		</encoder>-->
+<!--	</appender>-->
 
 	<!-- Rolling File Appender for all Application Logs -->
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -71,13 +71,13 @@
 
 	<!-- Development for console logging -->
 	<!-- Uncomment this during development -->
-<!--	&lt;!&ndash;-->
+	<!--
 	<logger name="org.khoolayhan.mc" level="DEBUG" additivity="false">
 	   <appender-ref ref="CONSOLE"/>
 	   <appender-ref ref="ASYNC_FILE"/>
 	   <appender-ref ref="ASYNC_ERROR_FILE"/>
 	</logger>
-<!--	&ndash;&gt;-->
+	-->
 
 	<!-- Reduce noise from third-party libraries/frameworks -->
 	<logger name="org.springframework" level="WARN"/>
