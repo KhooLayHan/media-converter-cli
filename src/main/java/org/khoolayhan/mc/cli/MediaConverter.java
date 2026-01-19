@@ -77,14 +77,14 @@ public class MediaConverter implements Callable<Integer> {
                 return ExitCodes.EXIT_CONVERSION_FAILED;
             }
         } catch (IllegalArgumentException e) {
-            feedback.showError(e.getMessage());
+			feedback.showError(e.getMessage() != null ? e.getMessage() : "Invalid input");
 
             logger.error("Input validation failed: {}", e.getMessage());
             logger.debug("Validation failure details", e);
 
             return ExitCodes.EXIT_INVALID_INPUT;
         } catch (UnsupportedFormatException e) {
-            feedback.showError(e.getMessage());
+			feedback.showError(e.getMessage() != null ? e.getMessage() : "Unsupported format");
             // feedback.showInfo("Use --help to see supported formats");
 
             logger.warn("Unsupported format requested: {}", e.getMessage());
