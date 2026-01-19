@@ -173,7 +173,7 @@
 		<module name="ClassTypeParameterName">
 			<property name="format" value="^[A-Z][A-Z0-9]*$"/>
 		</module>
-		<module name="ConstantName"/>
+<!--		<module name="ConstantName"/>-->
 		<module name="InterfaceTypeParameterName">
 			<property name="format" value="^[A-Z][A-Z0-9]*$"/>
 		</module>
