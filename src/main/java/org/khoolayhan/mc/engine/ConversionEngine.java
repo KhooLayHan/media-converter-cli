@@ -12,17 +12,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Core engine responsible for orchestrating file conversion operations.
- * This class acts as the central component that coordinates the conversion process by:
+ * Core engine responsible for orchestrating file conversion operations. This class acts as the
+ * central component that coordinates the conversion process by:
+ *
  * <ul>
- *   <li>Extracting and validating file extensions</li>
- *   <li>Selecting appropriate conversion strategies via the Strategy Factory</li>
- *   <li>Executing the selected strategy</li>
- *   <li>Providing comprehensive logging throughout the process</li>
+ *   <li>Extracting and validating file extensions
+ *   <li>Selecting appropriate conversion strategies via the Strategy Factory
+ *   <li>Executing the selected strategy
+ *   <li>Providing comprehensive logging throughout the process
  * </ul>
  *
- * <p>The ConversionEngine uses the Strategy pattern to delegate actual conversion logic
- * to specialized strategy implementations, making the system extensible and maintainable.
+ * <p>The ConversionEngine uses the Strategy pattern to delegate actual conversion logic to
+ * specialized strategy implementations, making the system extensible and maintainable.
  */
 public class ConversionEngine {
     private static final Logger logger = LoggerFactory.getLogger(ConversionEngine.class);
