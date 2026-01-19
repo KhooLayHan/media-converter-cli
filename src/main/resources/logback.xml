@@ -1,4 +1,6 @@
 <configuration>
+	<!-- Suppress logback's internal status messages from console -->
+	<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
 	<!-- Property for log file location - makes it configurable -->
 	<property name="LOG_DIR" value="${LOG_PATH:-logs}"/>
@@ -6,11 +8,11 @@
 	<property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
 
 	<!-- Console Appender with colored output, only for development/debugging -->
-<!--	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">-->
-<!--		<encoder>-->
-<!--			<pattern>%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{20}) - %msg%n</pattern>-->
-<!--		</encoder>-->
-<!--	</appender>-->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{20}) - %msg%n</pattern>
+		</encoder>
+	</appender>
 
 	<!-- Rolling File Appender for all Application Logs -->
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
