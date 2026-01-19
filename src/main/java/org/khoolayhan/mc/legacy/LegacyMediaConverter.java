@@ -22,6 +22,10 @@ import tools.jackson.dataformat.xml.XmlMapper;
  * OCP: To add a new format, you must modify this file.
  */
 public class LegacyMediaConverter {
+    private LegacyMediaConverter() {
+        // Utility class
+    }
+
     public static void main(String[] args) {
         // Rudimentary Argument Parsing (No Picocli)
         String inputFileParam = null;
@@ -87,7 +91,7 @@ public class LegacyMediaConverter {
                     System.err.println("Unsupported output format for JSON");
                 }
                 // --- Csv Input ---
-            } else if ("csv".equals(outExt)) {
+            } else if ("csv".equals(inExt)) {
                 // Read CSV
                 CsvMapper csvMapper = CsvMapper.builder().build();
                 CsvSchema schema = csvMapper.schemaFor(User.class).withHeader();
@@ -119,7 +123,7 @@ public class LegacyMediaConverter {
                     }
                 }
                 // --- Xml Input ---
-            } else if ("xml".equals(outExt)) {
+            } else if ("xml".equals(inExt)) {
                 // Read XML
                 XmlMapper xmlMapper =
                         XmlMapper.builder().enable(SerializationFeature.INDENT_OUTPUT).build();
