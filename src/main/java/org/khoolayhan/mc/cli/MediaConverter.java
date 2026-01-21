@@ -9,6 +9,7 @@ import com.github.lalyos.jfiglet.FigletFont;
 import org.khoolayhan.mc.constants.ExitCodes;
 import org.khoolayhan.mc.engine.ConversionEngine;
 import org.khoolayhan.mc.engine.exceptions.ConversionException;
+import org.khoolayhan.mc.engine.exceptions.MediaConverterException;
 import org.khoolayhan.mc.engine.exceptions.UnsupportedFormatException;
 import org.khoolayhan.mc.service.ConversionResult;
 import org.khoolayhan.mc.service.ConversionService;
@@ -83,26 +84,34 @@ public class MediaConverter implements Callable<Integer> {
             logger.debug("Validation failure details", e);
 
             return ExitCodes.EXIT_INVALID_INPUT;
-        } catch (UnsupportedFormatException e) {
-            feedback.showError(e.getMessage() != null ? e.getMessage() : "Unsupported format");
-            // feedback.showInfo("Use --help to see supported formats");
+        } catch (MediaConverterException e) {
+            switch (e) {
+                case UnsupportedFormatException ex -> {
+                    feedback.showError(
+                            ex.getMessage() != null ? ex.getMessage() : "Unsupported format");
+                    // feedback.showInfo("Use --help to see supported formats");
 
-            logger.warn("Unsupported format requested: {}", e.getMessage());
+                    logger.warn("Unsupported format requested: {}", ex.getMessage());
 
-            return ExitCodes.EXIT_INVALID_INPUT;
-        } catch (ConversionException e) {
-            feedback.showError(
-                    "Conversion failed: " + e.getMessage(), "Check the logs for technical details");
-            logger.error("Conversion exception occurred", e);
+                    return ExitCodes.EXIT_INVALID_INPUT;
+                }
+                case ConversionException ex -> {
+                    feedback.showError(
+                            "Conversion failed: " + ex.getMessage(),
+                            "Check the logs for technical details");
+                    logger.error("Conversion exception occurred", ex);
 
-            return ExitCodes.EXIT_CONVERSION_FAILED;
-        } catch (Exception e) {
-            feedback.showDetailedError("An unexpected error occurred", e);
+                    return ExitCodes.EXIT_CONVERSION_FAILED;
+                }
+                default -> {
+                    feedback.showDetailedError("An unexpected error occurred", e);
 
-            logger.error("Unexpected exception in conversion process", e);
-            logger.error("Input file: {}, Output file: {}", inputFile, outputFile);
+                    logger.error("Unexpected exception in conversion process", e);
+                    logger.error("Input file: {}, Output file: {}", inputFile, outputFile);
 
-            return ExitCodes.EXIT_UNEXPECTED_ERROR;
+                    return ExitCodes.EXIT_UNEXPECTED_ERROR;
+                }
+            }
         } finally {
             long totalDuration = System.currentTimeMillis() - startTime;
             logger.info("Total execution time: {}ms", totalDuration);

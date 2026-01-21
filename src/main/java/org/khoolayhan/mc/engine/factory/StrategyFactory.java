@@ -12,12 +12,12 @@ import org.khoolayhan.mc.utils.FileType;
  * ConverterFactories.
  */
 public final class StrategyFactory {
-    private static final Map<FileType, ConverterFactory> FACTORY_MAP = new HashMap<>();
+    private static final Map<FileType, ConverterFactory> factoryMap = new HashMap<>();
 
     static {
-        FACTORY_MAP.put(FileType.JSON, new JsonFactory());
-        FACTORY_MAP.put(FileType.CSV, new CsvFactory());
-        FACTORY_MAP.put(FileType.XML, new XmlFactory());
+        factoryMap.put(FileType.JSON, new JsonFactory());
+        factoryMap.put(FileType.CSV, new CsvFactory());
+        factoryMap.put(FileType.XML, new XmlFactory());
     }
 
     private StrategyFactory() {}
@@ -33,7 +33,7 @@ public final class StrategyFactory {
     public static ConversionStrategy getStrategy(FileType fromExtension, FileType toExtension)
             throws UnsupportedFormatException {
 
-        ConverterFactory factory = FACTORY_MAP.get(fromExtension);
+        ConverterFactory factory = factoryMap.get(fromExtension);
         if (factory == null) {
             throw new UnsupportedFormatException(
                     "Input format " + fromExtension + " is not supported");

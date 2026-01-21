@@ -50,9 +50,8 @@ public class JacksonFacade {
         return xmlMapper.readValue(source, listType);
     }
 
-    public <T> void writeXml(File dest, List<T> data) {
-        // XML usually needs a root wrapper, but for simplicity in MVP, we write the list directly
-        xmlMapper.writeValue(dest, data);
+    public <T> void writeXml(File destination, List<T> data) {
+        xmlMapper.writeValue(destination, data);
     }
 
     // --- CSV Operations ---
