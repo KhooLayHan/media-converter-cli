@@ -87,17 +87,17 @@ public class MediaConverter implements Callable<Integer> {
         } catch (MediaConverterException e) {
 			switch (e) {
 				case UnsupportedFormatException ex -> {
-					feedback.showError(e.getMessage() != null ? e.getMessage() : "Unsupported format");
+					feedback.showError(ex.getMessage() != null ? ex.getMessage() : "Unsupported format");
 					// feedback.showInfo("Use --help to see supported formats");
 
-					logger.warn("Unsupported format requested: {}", e.getMessage());
+					logger.warn("Unsupported format requested: {}", ex.getMessage());
 
 					return ExitCodes.EXIT_INVALID_INPUT;
 				}
 				case ConversionException ex -> {
 					feedback.showError(
-							"Conversion failed: " + e.getMessage(), "Check the logs for technical details");
-					logger.error("Conversion exception occurred", e);
+							"Conversion failed: " + ex.getMessage(), "Check the logs for technical details");
+					logger.error("Conversion exception occurred", ex);
 
 					return ExitCodes.EXIT_CONVERSION_FAILED;
 				}
