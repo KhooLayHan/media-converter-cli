@@ -1,5 +1,6 @@
 package org.khoolayhan.mc.cli;
 
+import org.khoolayhan.mc.engine.exceptions.MediaConverterException;
 import org.slf4j.Logger;
 
 /**
@@ -51,7 +52,7 @@ public class UserFeedback {
         // No logging for cosmetic output like banners
     }
 
-    public void showDetailedError(String userMessage, Exception exception) {
+    public void showDetailedError(String userMessage, MediaConverterException exception) {
         System.err.println("Error: " + userMessage);
         System.err.println("\tDetails: " + exception.getMessage());
         System.err.println("\t(Check the logs for full technical details)");
@@ -64,7 +65,7 @@ public class UserFeedback {
                 exception);
     }
 
-    public void logTechnicalDetails(String message, Object... args) {
+    public void logTechnicalDetails(String message, Object[] args) {
         logger.debug(message, args);
     }
 
