@@ -85,31 +85,33 @@ public class MediaConverter implements Callable<Integer> {
 
             return ExitCodes.EXIT_INVALID_INPUT;
         } catch (MediaConverterException e) {
-			switch (e) {
-				case UnsupportedFormatException ex -> {
-					feedback.showError(ex.getMessage() != null ? ex.getMessage() : "Unsupported format");
-					// feedback.showInfo("Use --help to see supported formats");
+            switch (e) {
+                case UnsupportedFormatException ex -> {
+                    feedback.showError(
+                            ex.getMessage() != null ? ex.getMessage() : "Unsupported format");
+                    // feedback.showInfo("Use --help to see supported formats");
 
-					logger.warn("Unsupported format requested: {}", ex.getMessage());
+                    logger.warn("Unsupported format requested: {}", ex.getMessage());
 
-					return ExitCodes.EXIT_INVALID_INPUT;
-				}
-				case ConversionException ex -> {
-					feedback.showError(
-							"Conversion failed: " + ex.getMessage(), "Check the logs for technical details");
-					logger.error("Conversion exception occurred", ex);
+                    return ExitCodes.EXIT_INVALID_INPUT;
+                }
+                case ConversionException ex -> {
+                    feedback.showError(
+                            "Conversion failed: " + ex.getMessage(),
+                            "Check the logs for technical details");
+                    logger.error("Conversion exception occurred", ex);
 
-					return ExitCodes.EXIT_CONVERSION_FAILED;
-				}
-				default -> {
-					feedback.showDetailedError("An unexpected error occurred", e);
+                    return ExitCodes.EXIT_CONVERSION_FAILED;
+                }
+                default -> {
+                    feedback.showDetailedError("An unexpected error occurred", e);
 
-					logger.error("Unexpected exception in conversion process", e);
-					logger.error("Input file: {}, Output file: {}", inputFile, outputFile);
+                    logger.error("Unexpected exception in conversion process", e);
+                    logger.error("Input file: {}, Output file: {}", inputFile, outputFile);
 
-					return ExitCodes.EXIT_UNEXPECTED_ERROR;
-				}
-			}
+                    return ExitCodes.EXIT_UNEXPECTED_ERROR;
+                }
+            }
         } finally {
             long totalDuration = System.currentTimeMillis() - startTime;
             logger.info("Total execution time: {}ms", totalDuration);
