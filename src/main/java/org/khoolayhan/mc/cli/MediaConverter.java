@@ -55,7 +55,10 @@ public class MediaConverter implements Callable<Integer> {
     @Override
     public Integer call() {
         long startTime = System.currentTimeMillis();
-        logger.debug("Working directory: {}", System.getProperty("user.dir"));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Working directory: {}", System.getProperty("user.dir"));
+        }
 
         try {
             feedback.showProgress("Starting conversion...");
@@ -89,7 +92,6 @@ public class MediaConverter implements Callable<Integer> {
                 case UnsupportedFormatException ex -> {
                     feedback.showError(
                             ex.getMessage() != null ? ex.getMessage() : "Unsupported format");
-                    // feedback.showInfo("Use --help to see supported formats");
 
                     logger.warn("Unsupported format requested: {}", ex.getMessage());
 
@@ -124,7 +126,10 @@ public class MediaConverter implements Callable<Integer> {
         printBanner(feedback);
 
         logger.info("--- Media Converter CLI started ---");
-        logger.debug("Command line arguments: {}", String.join(" ", args));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Command line arguments: {}", String.join(" ", args));
+        }
 
         int exitCode = new CommandLine(new MediaConverter()).execute(args);
 

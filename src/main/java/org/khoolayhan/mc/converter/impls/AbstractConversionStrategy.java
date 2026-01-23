@@ -25,7 +25,6 @@ public abstract class AbstractConversionStrategy implements ConversionStrategy {
     protected AbstractConversionStrategy() {
         this.jacksonFacade = new JacksonFacade();
     }
-    ;
 
     /**
      * Template method that orchestrates the conversion process. This method is final to prevent
@@ -60,7 +59,6 @@ public abstract class AbstractConversionStrategy implements ConversionStrategy {
                     "Error during conversion in {}: {}",
                     this.getClass().getSimpleName(),
                     e.getMessage());
-            throw new ConversionException("Conversion failed: " + e.getMessage(), e);
         }
     }
 
