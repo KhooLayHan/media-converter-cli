@@ -110,23 +110,6 @@ dependencies {
 	implementation "tools.jackson.dataformat:jackson-dataformat-yaml:3.0.0"
 	implementation "tools.jackson.dataformat:jackson-dataformat-toml:3.0.0"
 
-	// Apache POI: https://github.com/apache/poi
-	implementation "org.apache.poi:poi:5.4.1"
-
-	// Apache Commons Compress: https://github.com/apache/commons-compress
-	implementation "org.apache.commons:commons-compress:1.28.0"
-
-	// Apache PDFBox: https://github.com/apache/pdfbox
-	implementation "org.apache.pdfbox:pdfbox:3.0.5"
-
-	// JODConverter: https://github.com/jodconverter/jodconverter
-	implementation "org.jodconverter:jodconverter-local:4.4.11"
-
-	// TwelveMonkeys: https://github.com/haraldk/TwelveMonkeys
-	implementation "com.twelvemonkeys.imageio:imageio-jpeg:3.12.0"
-	implementation "com.twelvemonkeys.imageio:imageio-tiff:3.12.0"
-	implementation "com.twelvemonkeys.imageio:imageio-webp:3.12.0"
-
 	// JUnit: https://github.com/junit-team/junit-framework
 	testImplementation platform("org.junit:junit-bom:6.0.1")
 	testImplementation "org.junit.jupiter:junit-jupiter"
@@ -172,7 +155,7 @@ tasks.register('runPattern', JavaExec) {
 	mainClass = "org.khoolayhan.mc.cli.MediaConverter"
 
 	// Default arguments
-	args = ["-i", "users.json", "-o", "users.csv"]
+	args = ["-i", "users.example.json", "-o", "users.example.csv"]
 }
 
 // Task to run the Bad Legacy Solution
@@ -183,5 +166,5 @@ tasks.register('runLegacy', JavaExec) {
 	mainClass = "org.khoolayhan.mc.legacy.LegacyMediaConverter"
 
 	// Default arguments
-	args = ["-i", "users.json", "-o", "users_legacy.csv"]
+	args = ["-i", "users.example.json", "-o", "users_legacy.csv"]
 }
