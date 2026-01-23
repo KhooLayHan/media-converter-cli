@@ -1,6 +1,6 @@
 package org.khoolayhan.mc.engine.factory;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import org.khoolayhan.mc.converter.ConversionStrategy;
@@ -12,7 +12,7 @@ import org.khoolayhan.mc.utils.FileType;
  * ConverterFactories.
  */
 public final class StrategyFactory {
-    private static final Map<FileType, ConverterFactory> factoryMap = new HashMap<>();
+    private static final Map<FileType, ConverterFactory> factoryMap = new EnumMap<>(FileType.class);
 
     static {
         factoryMap.put(FileType.JSON, new JsonFactory());
