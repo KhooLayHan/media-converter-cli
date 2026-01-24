@@ -155,7 +155,7 @@ tasks.register('runPattern', JavaExec) {
 	mainClass = "org.khoolayhan.mc.cli.MediaConverter"
 
 	// Default arguments
-	args = ["-i", "users.example.json", "-o", "users.example.csv"]
+	args = ["-i", "users.json", "-o", "users.example.csv"]
 }
 
 // Task to run the Bad Legacy Solution
@@ -166,5 +166,5 @@ tasks.register('runLegacy', JavaExec) {
 	mainClass = "org.khoolayhan.mc.legacy.LegacyMediaConverter"
 
 	// Default arguments
-	args = ["-i", "users.example.json", "-o", "users_legacy.csv"]
+	args = ["-i", "users.json", "-o", "users_legacy.csv"]
 }

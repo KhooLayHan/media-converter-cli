@@ -39,7 +39,7 @@ git clone https://github.com/KhooLayHan/media-converter-cli
 cd media-converter-cli
 
 # Copy the users.json file from the template
-cp .users.example.json .users.json
+cp users.example.json users.json
 ```
 
 ### 2. Build the Project
