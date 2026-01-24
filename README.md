@@ -2,8 +2,8 @@
 
 An extensible Command Line Interface (CLI) tool for converting data formats involving JSON, CSV, XML.
 
-**Coursework:** Design Patterns (Level 3)  
-**Student Name:** Khoo Lay Han   
+**Coursework:** Design Patterns (Level 3)
+**Student Name:** Khoo Lay Han
 **Quality Attribute:** Maintainability
 
 ---
@@ -21,19 +21,19 @@ This project demonstrates the application of software design patterns to improve
 - **Build Tool:** Gradle and Groovy DSL
 - **CLI Framework:** Picocli
 - **JSON/XML/CSV Processing:** Jackson (3.0.0)
-- **Logging:** SLF4J + Logback 
+- **Logging:** SLF4J + Logback
 - **Code Quality:** Checkstyle, SpotBugs, Spotless with Google Java Format
 
 ## Prerequisites
 Before running the application, ensure you have the following installed:
-- Java Development Kit (JDK) 21 
-- Gradle 8.14 
+- Java Development Kit (JDK) 21
+- Gradle 8.14
 - Terminal/Command Prompt/Powershell
 
 ## Quick Setup Guide
 
 ### 1. Clone and Configure
-   Clone the repository. 
+Clone the repository.
 ```bash
 git clone https://github.com/KhooLayHan/media-converter-cli
 cd media-converter-cli
